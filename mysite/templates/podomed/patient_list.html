@@ -1,0 +1,34 @@
+{% extends 'podomed/base.html' %}
+
+{% block title %}Patient List{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="top-bar">
+        <a href="{% url 'create_appointment' %}" class="btn btn-primary">Stworz wizyte</a>
+        <a href="{% url 'create_patient' %}" class="btn btn-primary">Stworz klienta</a>
+    </div>
+    <ul class="nav nav-tabs" role="tablist">
+        {% for city in cities %}
+        <li class="nav-item">
+            <a class="nav-link {% if city == selected_city %}active{% endif %}" href="?city={{ city }}">{{ city }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+    <h2>Twoi Pacjenci</h2>
+    <form method="GET" class="form-inline mb-4">
+        <input type="text" name="q" class="form-control mr-2" placeholder="Szukaj pacjenta " value="{{ request.GET.q }}">
+        <button type="submit" class="btn btn-primary">Szukaj</button>
+    </form>
+    
+    <ul class="list-group">
+        {% for patient in patients %}
+            <li class="list-group-item">
+                <a href="{% url 'patient_detail' patient.pk %}">{{ patient.first_name }} {{ patient.last_name }}</a>
+            </li>
+        {% empty %}
+            <li class="list-group-item">Pacjent nie znaleziony</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

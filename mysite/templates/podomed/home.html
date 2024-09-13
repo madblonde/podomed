@@ -1,0 +1,89 @@
+{% extends 'podomed/base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="top-bar">
+        <a href="{% url 'create_appointment' %}" class="btn btn-primary">Stworz wizyte</a>
+        <a href="{% url 'create_patient' %}" class="btn btn-primary">Stworz klienta</a>
+        <a href="{% url 'patient_list' %}" class="btn btn-primary">Zobacz wszystkich klienow</a>
+        {% if user.is_master_doctor %}
+            <a href="{% url 'doctor_list' %}" class="btn btn-primary">Zobacz pracownikow</a>
+        {% endif %}
+    </div>
+
+    <h2>Wizyty</h2>
+    <div class="appointment-filter">
+        <!-- Appointment Filter Tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link {% if filter_type == 'all' %}active{% endif %}" href="?filter=all">Wszystkie wizyty</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if filter_type == 'today' %}active{% endif %}" href="?filter=today">Dzis</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if filter_type == 'this_week' %}active{% endif %}" href="?filter=this_week">Ten tydzien</a>
+            </li>
+            {% for city in cities %}
+            <li class="nav-item">
+                <a class="nav-link {% if city == selected_city %}active{% endif %}" href="?city={{ city }}">{{ city }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    
+        <!-- Date Filter Form -->
+        <form method="GET" class="form-inline my-2">
+            <div class="form-group mr-sm-2">
+                <input type="date" name="date" value="{{ selected_date }}" class="form-control" placeholder="Filtruj wedlug daty">
+            </div>
+            <div class="form-group mr-sm-2">
+                <select name="reason" class="form-control">
+                    <option value="">Filtruj wedlug powodu</option>
+                    {% for reason in reasons %}
+                    <option value="{{ reason }}" {% if reason == selected_reason %}selected{% endif %}>{{ reason }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Filtruj</button>
+        </form>
+    
+        <!-- Appointment Table -->
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>Pacjent</th>
+                    <th>Data</th>
+                    <th>Godzina</th>
+                    <th>Czas Trwania</th>
+                    <th>Miasto</th>
+                    <th>Powod</th>
+                    <th>Zaplata</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for appointment in appointments %}
+                <tr>
+                    <td>{{ appointment.patient }}</td>
+                    <td>{{ appointment.date }}</td>
+                    <td>{{ appointment.time }}</td>
+                    <td>{{ appointment.duration }}</td>
+                    <td>{{ appointment.city }}</td>
+                    <td>{{ appointment.reason }}</td>
+                    <td>{{ appointment.money }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7">Wizyty nie znalezione.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    
+        <!-- Total Earnings -->
+        <div class="total-earnings">
+            <strong>Zarobki: </strong> {{ total_earnings }} PLN
+        </div>
+    </div>
+    
+</div>
+{% endblock %}

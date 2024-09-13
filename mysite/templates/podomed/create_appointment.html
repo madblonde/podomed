@@ -1,0 +1,14 @@
+{% extends 'podomed/base.html' %}
+
+{% block title %}Create Appointment{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Stworz wiztye</h2>
+    <form method="post" class="mt-4">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Zapisz wizyte</button>
+    </form>
+</div>
+{% endblock %}

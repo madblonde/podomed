@@ -1,0 +1,18 @@
+{% extends 'podomed/base.html' %}
+
+{% block title %}Doctors List{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Lekarze</h2>
+    <ul class="list-group">
+        {% for doctor in doctors %}
+            <li class="list-group-item">
+                <a href="{% url 'doctor_detail' doctor.id %}">{{ doctor.first_name }} {{ doctor.last_name }}</a>
+            </li>
+        {% empty %}
+            <li class="list-group-item">Brak lekarzy znalezionych.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

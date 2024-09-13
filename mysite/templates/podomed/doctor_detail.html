@@ -1,0 +1,71 @@
+{% extends 'podomed/base.html' %}
+
+{% block title %}Doctor Details{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Lekarz</h2>
+    <p><strong>Imie:</strong> {{ doctor.first_name }} {{ doctor.last_name }}</p>
+    <p><strong>Email:</strong> {{ doctor.email }}</p>
+    <!-- Add more fields as necessary -->
+
+    <!-- Tabs Navigation -->
+    <ul class="nav nav-tabs" id="doctorTabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="clients-tab" data-toggle="tab" href="#clients" role="tab" aria-controls="clients" aria-selected="true">Klienci</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="appointments-tab" data-toggle="tab" href="#appointments" role="tab" aria-controls="appointments" aria-selected="false">Wizyty</a>
+        </li>
+    </ul>
+
+    <!-- Tabs Content -->
+    <div class="tab-content" id="doctorTabsContent">
+        <!-- Clients Tab -->
+        <div class="tab-pane fade show active" id="clients" role="tabpanel" aria-labelledby="clients-tab">
+            <form method="GET" class="form-inline my-4">
+                <input type="text" name="client_search" class="form-control mr-2" placeholder="Search Clients" value="{{ client_query }}">
+                <button type="submit" class="btn btn-primary">Szukaj</button>
+            </form>
+            
+            <ul class="list-group">
+                {% for patient in clients %}
+                <li class="list-group-item">
+                    <a href="{% url 'patient_detail' patient.pk %}">{{ patient.first_name }} {{ patient.last_name }}</a>
+                </li>
+                {% empty %}
+                    <li class="list-group-item">Brak klientow znalezionych</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Appointments Tab -->
+        <div class="tab-pane fade" id="appointments" role="tabpanel" aria-labelledby="appointments-tab">
+            <form method="GET" class="form-inline my-4">
+                <input type="date" name="filter_date" class="form-control mr-2" value="{{ filter_date }}">
+                <button type="submit" class="btn btn-primary">Filtruj wedlug daty</button>
+            </form>
+            
+            <ul class="list-group">
+                {% for appointment in appointments %}
+                    <li class="list-group-item">
+                        <strong>Data:</strong> {{ appointment.date }} <br>
+                        <strong>Godzina:</strong> {{ appointment.time }} <br>
+                        <strong>Czas trawania:</strong> {{ appointment.duration }} <br>
+                        <strong>Miasto:</strong> {{ appointment.city }} <br>
+                        <strong>Pacjent:</strong> {{ appointment.patient }} <br>
+                        <strong>Powod:</strong> {{ appointment.reason }} <br>
+                        <strong>Zaplata:</strong> {{ appointment.money|floatformat:2 }} PLN
+                    </li>
+                {% empty %}
+                    <li class="list-group-item">Brak wizyt znalezioncyh</li>
+                {% endfor %}
+            </ul>
+
+            <footer class="mt-4">
+                <h4>Calkowite zyski: {{ total_earnings|floatformat:2 }} PLN</h4>
+            </footer>
+        </div>
+    </div>
+</div>
+{% endblock %}

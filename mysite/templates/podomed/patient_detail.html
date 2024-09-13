@@ -1,0 +1,30 @@
+{% extends 'podomed/base.html' %}
+
+{% block title %}Patient Detail{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>{{ patient.first_name }} {{ patient.last_name }}</h2>
+    <p><strong>Data urodzenia</strong> {{ patient.dob }}</p>
+    <p><strong>Number telefonu</strong> {{ patient.phone_number }}</p>
+    <p><strong>Miasto</strong> {{ patient.city }}</p>
+    
+    <h3>Wizyty</h3>
+    <ul class="list-group">
+        {% for appointment in appointments %}
+            <li class="list-group-item">
+                <strong>Data:</strong> {{ appointment.date }} <br>
+                <strong>Godzina:</strong> {{ appointment.time }} <br>
+                <strong>Czas Trwania:</strong> {{ appointment.duration }} <br>
+                <strong>Miasto:</strong> {{ appointment.city }} <br>
+                <strong>Powod:</strong> {{ appointment.reason }} <br>
+                <strong>Zaplata:</strong> {{ appointment.money }}
+            </li>
+        {% empty %}
+            <li class="list-group-item">Brak wizyt.</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'patient_list' %}" class="btn btn-secondary mt-4">Wroc do listy pacjentow</a>
+</div>
+{% endblock %}
