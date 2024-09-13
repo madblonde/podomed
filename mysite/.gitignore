@@ -1,0 +1,56 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pdb
+
+# Virtual environment
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Pipenv & Poetry
+Pipfile
+Pipfile.lock
+poetry.lock
+
+# PEP 582; used by e.g. github.com/David-OConnor/pyflow
+__pypackages__/
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+*.py~
+*.sqlite3
+db.sqlite3
+
+# Django migrations
+*/migrations/*
+!*/migrations/__init__.py
+
+# Environment variables
+.env
+
+# VSCode
+.vscode/
+
+# PyCharm
+.idea/
+
+# Static and media files
+/static/
+/media/
+
+# Node modules
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
